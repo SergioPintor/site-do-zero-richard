@@ -3,74 +3,92 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Comédia Stand-Up Brasileira</title>
+    <title>Login - Comédia Stand-Up Brasileira</title>
     <link rel="stylesheet" href="style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <header class="cabecalho">
-        <h1>Comédia Stand-Up Brasileira</h1>
-        <nav>
-            <ul>
-                <li><a href="#o-que-e">O que é Stand-Up?</a></li>
-                <li><a href="#principais-comediantes">Principais Comediantes</a></li>
-                <li><a href="#onde-assistir">Onde Assistir</a></li>
-                <li><a href="#historia">História no Brasil</a></li>
-                <li><a href="#quiz">Quiz!</a></li>
-            </ul>
-        </nav>
-    </header>
-
-    <main class="conteudo-principal">
-        <section id="o-que-e">
-            <h2>O que é Stand-Up Comedy?</h2>
-            <p>Stand-up comedy é um formato de apresentação humorística onde um comediante se apresenta sozinho no palco, geralmente falando diretamente para a plateia. <br>O humor surge de observações do cotidiano, experiências pessoais, críticas sociais e políticas, contadas de forma engraçada e envolvente.</p>
-        </section>
-
-        <section id="principais-comediantes">
-            <h2>Principais Comediantes Brasileiros</h2>
-            <ul>
-                <li>Fábio Porchat</li>
-                <li>Danilo Gentili</li>
-                <li>Rafinha Bastos</li>
-                <li>Tatá Werneck</li>
-                <li>Thiago Ventura</li>
-                <li>Bruna Louise</li>
-                </ul>
-        </section>
-
-        <section id="onde-assistir">
-            <h2>Onde Assistir a Shows de Stand-Up</h2>
-            <p>Você pode encontrar shows de stand-up em diversos lugares, como:</p>
-            <ul>
-                <li>Casas de comédia especializadas</li>
-                <li>Teatros</li>
-                <li>Bares e pubs</li>
-                <li>Plataformas de streaming (alguns especiais)</li>
-            </ul>
-        </section>
-
-        <section id="historia">
-            <h2>Um Breve Olhar na História do Stand-Up no Brasil</h2>
-            <p>A comédia stand-up começou a ganhar força no Brasil no início dos anos 2000, com a influência de comediantes americanos. <br>Grupos como o Clube da Comédia e Comédia em Pé foram pioneiros e ajudaram a popularizar o formato no país. <br>Hoje, o Brasil possui uma cena de stand-up vibrante e diversificada, com muitos talentos surgindo.</p>
-        </section>
-
-        <section id="quiz">
-            <h2>Quiz sobre Stand-Up Brasileiro!</h2>
-            <p>Teste seus conhecimentos sobre a comédia stand-up do Brasil!</p>
-            <div id="quiz-container">
-                </div>
-            <button id="submit-quiz" style="display: none;">Ver Resultado</button>
-            <div id="quiz-result"></div>
-        </section>
+    <main id="login-page" class="login-container">
+        <h2>Bem-vindo! Faça Login para Continuar</h2>
+        <form id="login-form">
+            <div class="input-group">
+                <label for="username">Usuário:</label>
+                <input type="text" id="username" name="username" required>
+            </div>
+            <div class="input-group">
+                <label for="password">Senha:</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+            <button type="submit">Entrar</button>
+            <p id="login-message" class="error-message"></p>
+        </form>
     </main>
 
-    <footer class="rodape">
-        <p>&copy; 2025 Comédia Stand-Up Brasileira - Todos os direitos reservados.</p>
-    </footer>
+    <div id="site-content" class="hidden">
+        <header class="cabecalho">
+            <h1>Comédia Stand-Up Brasileira</h1>
+            <nav>
+                <ul>
+                    <li><a href="#o-que-e">O que é Stand-Up?</a></li>
+                    <li><a href="#principais-comediantes">Principais Comediantes</a></li>
+                    <li><a href="#onde-assistir">Onde Assistir</a></li>
+                    <li><a href="#historia">História no Brasil</a></li>
+                    <li><a href="#quiz">Quiz!</a></li>
+                    <li><a href="#" id="logout-button">Sair</a></li>
+                </ul>
+            </nav>
+        </header>
 
+        <main class="conteudo-principal">
+            <section id="o-que-e">
+                <h2>O que é Stand-Up Comedy?</h2>
+                <p>Stand-up comedy é um formato de apresentação humorística onde um comediante se apresenta sozinho no palco, geralmente falando diretamente para a plateia. <br>O humor surge de observações do cotidiano, experiências pessoais, críticas sociais e políticas, contadas de forma engraçada e envolvente.</p>
+            </section>
+
+            <section id="principais-comediantes">
+                <h2>Principais Comediantes Brasileiros</h2>
+                <ul>
+                    <li>Fábio Porchat</li>
+                    <li>Danilo Gentili</li>
+                    <li>Rafinha Bastos</li>
+                    <li>Tatá Werneck</li>
+                    <li>Thiago Ventura</li>
+                    <li>Bruna Louise</li>
+                    </ul>
+            </section>
+
+            <section id="onde-assistir">
+                <h2>Onde Assistir a Shows de Stand-Up</h2>
+                <p>Você pode encontrar shows de stand-up em diversos lugares, como:</p>
+                <ul>
+                    <li>Casas de comédia especializadas</li>
+                    <li>Teatros</li>
+                    <li>Bares e pubs</li>
+                    <li>Plataformas de streaming (alguns especiais)</li>
+                </ul>
+            </section>
+
+            <section id="historia">
+                <h2>Um Breve Olhar na História do Stand-Up no Brasil</h2>
+                <p>A comédia stand-up começou a ganhar força no Brasil no início dos anos 2000, com a influência de comediantes americanos. <br>Grupos como o Clube da Comédia e Comédia em Pé foram pioneiros e ajudaram a popularizar o formato no país. <br>Hoje, o Brasil possui uma cena de stand-up vibrante e diversificada, com muitos talentos surgindo.</p>
+            </section>
+
+            <section id="quiz">
+                <h2>Quiz sobre Stand-Up Brasileiro!</h2>
+                <p>Teste seus conhecimentos sobre a comédia stand-up do Brasil!</p>
+                <div id="quiz-container">
+                    </div>
+                <button id="submit-quiz" style="display: none;">Ver Resultado</button>
+                <div id="quiz-result"></div>
+            </section>
+        </main>
+
+        <footer class="rodape">
+            <p>&copy; 2025 Comédia Stand-Up Brasileira - Todos os direitos reservados.</p>
+        </footer>
+    </div>
     <script src="script.js"></script>
 </body>
 </html>
