@@ -3,27 +3,51 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - Comédia Stand-Up Brasileira</title>
+    <title>Comédia Stand-Up Brasileira</title>
     <link rel="stylesheet" href="style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <main id="login-page" class="login-container">
-        <h2>Bem-vindo! Faça Login para Continuar</h2>
-        <form id="login-form">
-            <div class="input-group">
-                <label for="username">Usuário:</label>
-                <input type="text" id="username" name="username" required>
-            </div>
-            <div class="input-group">
-                <label for="password">Senha:</label>
-                <input type="password" id="password" name="password" required>
-            </div>
-            <button type="submit">Entrar</button>
-            <p id="login-message" class="error-message"></p>
-        </form>
+    <main id="auth-page" class="auth-container">
+        <div id="login-section">
+            <h2>Bem-vindo! Faça Login para Continuar</h2>
+            <form id="login-form">
+                <div class="input-group">
+                    <label for="username-login">Usuário:</label>
+                    <input type="text" id="username-login" name="username" required>
+                </div>
+                <div class="input-group">
+                    <label for="password-login">Senha:</label>
+                    <input type="password" id="password-login" name="password" required>
+                </div>
+                <button type="submit">Entrar</button>
+                <p id="login-message" class="message-text error-message"></p>
+            </form>
+            <p class="toggle-text">Não tem uma conta? <a href="#" id="show-register">Cadastre-se aqui</a></p>
+        </div>
+
+        <div id="register-section" class="hidden">
+            <h2>Crie sua Conta</h2>
+            <form id="register-form">
+                <div class="input-group">
+                    <label for="username-register">Usuário:</label>
+                    <input type="text" id="username-register" name="username" required>
+                </div>
+                <div class="input-group">
+                    <label for="password-register">Senha:</label>
+                    <input type="password" id="password-register" name="password" required>
+                </div>
+                <div class="input-group">
+                    <label for="confirm-password-register">Confirmar Senha:</label>
+                    <input type="password" id="confirm-password-register" name="confirm_password" required>
+                </div>
+                <button type="submit">Registrar</button>
+                <p id="register-message" class="message-text"></p>
+            </form>
+            <p class="toggle-text">Já tem uma conta? <a href="#" id="show-login">Faça Login aqui</a></p>
+        </div>
     </main>
 
     <div id="site-content" class="hidden">
