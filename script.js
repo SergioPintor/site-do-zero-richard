@@ -1,75 +1,182 @@
 // script.js
 
 document.addEventListener('DOMContentLoaded', function() {
-    // --- Variáveis do Login ---
-    const loginPage = document.getElementById('login-page');
+    // --- Variáveis da Autenticação ---
+    const authPage = document.getElementById('auth-page');
+    const loginSection = document.getElementById('login-section');
+    const registerSection = document.getElementById('register-section');
     const siteContent = document.getElementById('site-content');
+
+    // Elementos do Login
     const loginForm = document.getElementById('login-form');
-    const usernameInput = document.getElementById('username');
-    const passwordInput = document.getElementById('password');
+    const usernameLoginInput = document.getElementById('username-login');
+    const passwordLoginInput = document.getElementById('password-login');
     const loginMessage = document.getElementById('login-message');
+    const showRegisterLink = document.getElementById('show-register');
+
+    // Elementos do Registro
+    const registerForm = document.getElementById('register-form');
+    const usernameRegisterInput = document.getElementById('username-register');
+    const passwordRegisterInput = document.getElementById('password-register');
+    const confirmPasswordRegisterInput = document.getElementById('confirm-password-register');
+    const registerMessage = document.getElementById('register-message');
+    const showLoginLink = document.getElementById('show-login');
+
+    // Botão de Logout
     const logoutButton = document.getElementById('logout-button');
 
-    // --- Credenciais de exemplo (ATENÇÃO: Não seguro para produção!) ---
-    const CORRECT_USERNAME = 'user';
-    const CORRECT_PASSWORD = 'password';
+    // --- Armazenamento de usuários (ATENÇÃO: Não seguro para produção!) ---
+    // Usaremos um objeto para armazenar usuários e senhas no localStorage
+    // Formato: { "usuario1": "senha1", "usuario2": "senha2" }
+    function getUsers() {
+        const users = localStorage.getItem('users');
+        return users ? JSON.parse(users) : {};
+    }
 
-    // --- Funções de Login ---
-    function showLoginPage() {
-        loginPage.classList.remove('hidden');
+    function saveUsers(users) {
+        localStorage.setItem('users', JSON.stringify(users));
+    }
+
+    // --- Funções para Alternar entre Login e Registro ---
+    function showLoginSection() {
+        loginSection.classList.remove('hidden');
+        registerSection.classList.add('hidden');
+        loginMessage.textContent = ''; // Limpa mensagens anteriores
+        registerMessage.textContent = ''; // Limpa mensagens anteriores
+    }
+
+    function showRegisterSection() {
+        registerSection.classList.remove('hidden');
+        loginSection.classList.add('hidden');
+        loginMessage.textContent = ''; // Limpa mensagens anteriores
+        registerMessage.textContent = ''; // Limpa mensagens anteriores
+    }
+
+    // --- Funções para Mostrar/Ocultar Páginas ---
+    function showAuthPage() {
+        authPage.classList.remove('hidden');
         siteContent.classList.add('hidden');
-        document.title = "Login - Comédia Stand-Up Brasileira"; // Atualiza o título da página
+        document.title = "Login - Comédia Stand-Up Brasileira";
+        showLoginSection(); // Garante que a seção de login seja a primeira a aparecer
     }
 
     function showSiteContent() {
-        loginPage.classList.add('hidden');
+        authPage.classList.add('hidden');
         siteContent.classList.remove('hidden');
-        document.title = "Comédia Stand-Up Brasileira"; // Volta o título original
-        // Importante: Rebuild o quiz ao mostrar o conteúdo do site
-        // Isso é necessário caso o usuário faça logout e depois login novamente
+        document.title = "Comédia Stand-Up Brasileira";
+        // Rebuild o quiz ao mostrar o conteúdo do site
         buildQuiz();
-        // Garante que o botão de submissão do quiz esteja visível
         document.getElementById('submit-quiz').style.display = 'block';
-        // Limpa o resultado do quiz anterior
         document.getElementById('quiz-result').innerHTML = '';
-        // Garante que o quiz-container esteja visível
         document.getElementById('quiz-container').style.display = 'block';
     }
 
-    loginForm.addEventListener('submit', function(event) {
-        event.preventDefault(); // Impede o envio padrão do formulário
-        const username = usernameInput.value;
-        const password = passwordInput.value;
+    // --- Event Listeners para Alternar Seções ---
+    showRegisterLink.addEventListener('click', function(event) {
+        event.preventDefault();
+        showRegisterSection();
+    });
 
-        if (username === CORRECT_USERNAME && password === CORRECT_PASSWORD) {
-            loginMessage.textContent = ''; // Limpa qualquer mensagem de erro
+    showLoginLink.addEventListener('click', function(event) {
+        event.preventDefault();
+        showLoginSection();
+    });
+
+    // --- Lógica de Registro ---
+    registerForm.addEventListener('submit', function(event) {
+        event.preventDefault();
+        const username = usernameRegisterInput.value.trim();
+        const password = passwordRegisterInput.value;
+        const confirmPassword = confirmPasswordRegisterInput.value;
+        const users = getUsers();
+
+        if (username.length < 3) {
+            registerMessage.textContent = 'Usuário deve ter no mínimo 3 caracteres.';
+            registerMessage.classList.remove('success-message');
+            registerMessage.classList.add('error-message');
+            return;
+        }
+
+        if (password.length < 6) {
+            registerMessage.textContent = 'Senha deve ter no mínimo 6 caracteres.';
+            registerMessage.classList.remove('success-message');
+            registerMessage.classList.add('error-message');
+            return;
+        }
+
+        if (password !== confirmPassword) {
+            registerMessage.textContent = 'As senhas não coincidem.';
+            registerMessage.classList.remove('success-message');
+            registerMessage.classList.add('error-message');
+            return;
+        }
+
+        if (users[username]) {
+            registerMessage.textContent = 'Nome de usuário já existe.';
+            registerMessage.classList.remove('success-message');
+            registerMessage.classList.add('error-message');
+            return;
+        }
+
+        // Se tudo estiver OK, registra o usuário
+        users[username] = password; // Armazena a senha em texto puro (inseguro para produção!)
+        saveUsers(users);
+
+        registerMessage.textContent = 'Registro bem-sucedido! Agora faça login.';
+        registerMessage.classList.remove('error-message');
+        registerMessage.classList.add('success-message');
+
+        // Opcional: Redirecionar para o login após registro
+        setTimeout(() => {
+            showLoginSection();
+            usernameLoginInput.value = username; // Preenche o campo de usuário
+            passwordLoginInput.value = ''; // Limpa o campo de senha
+            loginMessage.textContent = 'Registro bem-sucedido! Faça login.';
+            loginMessage.classList.remove('error-message');
+            loginMessage.classList.add('success-message');
+        }, 1500); // Espera 1.5 segundos antes de redirecionar
+    });
+
+    // --- Lógica de Login ---
+    loginForm.addEventListener('submit', function(event) {
+        event.preventDefault();
+        const username = usernameLoginInput.value.trim();
+        const password = passwordLoginInput.value;
+        const users = getUsers();
+
+        if (users[username] && users[username] === password) {
+            loginMessage.textContent = '';
             showSiteContent();
-            // Salva um estado de login no localStorage (para persistir a sessão simples)
             localStorage.setItem('loggedIn', 'true');
+            localStorage.setItem('currentUsername', username); // Armazena o usuário logado
         } else {
             loginMessage.textContent = 'Usuário ou senha incorretos.';
+            loginMessage.classList.remove('success-message');
+            loginMessage.classList.add('error-message');
         }
     });
 
+    // --- Lógica de Logout ---
     logoutButton.addEventListener('click', function(event) {
         event.preventDefault();
-        localStorage.removeItem('loggedIn'); // Remove o estado de login
-        showLoginPage();
-        // Limpa os campos do formulário de login ao fazer logout
-        usernameInput.value = '';
-        passwordInput.value = '';
+        localStorage.removeItem('loggedIn');
+        localStorage.removeItem('currentUsername'); // Remove o usuário logado
+        showAuthPage();
+        usernameLoginInput.value = '';
+        passwordLoginInput.value = '';
         loginMessage.textContent = '';
+        registerMessage.textContent = ''; // Limpa mensagem de registro também
     });
 
-    // Verifica se o usuário já está logado ao carregar a página
+    // --- Verificação inicial ao carregar a página ---
     if (localStorage.getItem('loggedIn') === 'true') {
         showSiteContent();
     } else {
-        showLoginPage();
+        showAuthPage();
     }
 
 
-    // --- Código do Quiz (já existente, movido para dentro do DOMContentLoaded) ---
+    // --- Código do Quiz ---
     const questions = [
         {
             question: "Qual o nome do comediante que começou a ganhar força no início dos anos 2000, e é conhecido por ser um dos pioneiros do stand-up no Brasil?",
@@ -128,8 +235,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const resultDiv = document.getElementById('quiz-result');
 
     function buildQuiz() {
-        // Limpa o quiz antes de reconstruir para evitar perguntas duplicadas
-        quizContainer.innerHTML = '';
+        quizContainer.innerHTML = ''; // Limpa o quiz antes de reconstruir
         questions.forEach((q, index) => {
             const questionDiv = document.createElement('div');
             questionDiv.classList.add('question');
@@ -146,19 +252,18 @@ document.addEventListener('DOMContentLoaded', function() {
             });
             quizContainer.appendChild(questionDiv);
         });
-        //submitButton.style.display = 'block'; // Mostra o botão ao carregar o quiz (agora controlado por showSiteContent)
     }
 
     function showResults() {
         let score = 0;
-        let allAnswered = true; // Flag para verificar se todas as perguntas foram respondidas
+        let allAnswered = true;
 
         questions.forEach((q, index) => {
             const selector = `input[name=question${index}]:checked`;
             const userAnswer = (quizContainer.querySelector(selector) || {}).value;
 
             if (!userAnswer) {
-                allAnswered = false; // Se uma pergunta não foi respondida, define a flag como false
+                allAnswered = false;
             }
 
             if (userAnswer === q.answer) {
@@ -167,8 +272,8 @@ document.addEventListener('DOMContentLoaded', function() {
         });
 
         if (!allAnswered) {
-            resultDiv.innerHTML = '<span style="color: red;">Por favor, responda a todas as perguntas antes de ver o resultado!</span>';
-            return; // Interrompe a função se nem todas as perguntas foram respondidas
+            resultDiv.innerHTML = '<span class="error-message">Por favor, responda a todas as perguntas antes de ver o resultado!</span>';
+            return;
         }
 
         resultDiv.innerHTML = `Você acertou ${score} de ${questions.length} perguntas!`;
@@ -180,11 +285,9 @@ document.addEventListener('DOMContentLoaded', function() {
             resultDiv.innerHTML += '<br>Continue estudando para se tornar um expert!';
         }
 
-        // Esconde o botão e o quiz após mostrar o resultado (opcional)
         submitButton.style.display = 'none';
         quizContainer.style.display = 'none';
     }
 
-    // Adiciona o evento de clique ao botão de submissão do quiz
     submitButton.addEventListener('click', showResults);
 });
